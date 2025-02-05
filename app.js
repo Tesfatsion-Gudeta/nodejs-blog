@@ -11,6 +11,9 @@ app.use(express.static("public"));
 //connecting to db
 connectDB();
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 //templating engine
 
 app.use(expressLayout);

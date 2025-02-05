@@ -35,6 +35,54 @@ router.get("/", async (req, res) => {
   }
 });
 
+//get method for post
+router.get("/post/:id", async (req, res) => {
+  try {
+    const slug = req.params.id;
+    const data = await Post.findById({ _id: slug });
+
+    const locals = {
+      title: data.title,
+      description: "simple blog created with nodeJs, Express and MongoDb",
+    };
+    res.render("post", {
+      locals,
+      data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//POST
+//post - seacrchTerm
+
+router.post("/search", async (req, res) => {
+  try {
+    const locals = {
+      title: "search",
+      description: "simple blog created with nodeJs, Express and MongoDb",
+    };
+
+    let searchTerm = req.body.searchTerm;
+    const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "");
+
+    const data = await Post.find({
+      //$or= match atleast one of this conditions
+      $or: [
+        { title: { $regex: new RegExp(searchNoSpecialChar, "i") } }, //$regex = MongoDB operator that allows pattern matching ,i : for case insensitive matching
+        { body: { $regex: new RegExp(searchNoSpecialChar, "i") } },
+      ],
+    });
+    res.render("search", {
+      data,
+      locals,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 // function insertPostData() {
 //   Post.insertMany([
 //     {
