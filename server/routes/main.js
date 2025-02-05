@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
       .limit(perPage)
       .exec();
 
-    const count = await Post.Count();
+    const count = await Post.countDocuments();
     const nextPage = parseInt(page) + 1;
     const hasNextPage = nextPage <= Math.ceil(count / perPage);
 
