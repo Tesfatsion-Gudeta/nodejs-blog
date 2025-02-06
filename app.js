@@ -21,6 +21,7 @@ app.set("layout", "./layouts/main");
 app.set("view engine", "ejs");
 
 app.use("/", require("./server/routes/main.js"));
+app.use("/", require("./server/routes/admin"));
 
 app.listen(PORT, () => {
   console.log(`app listening on port ${PORT}`);
