@@ -1,17 +1,5 @@
 {
   "version": 2,
-  "functions": {
-    "app.js": {
-      "maxDuration": 60
-    }
-  },
-  "routes": [
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "app.js"
-    }
-  ]
+  "builds": [{ "src": "app.js", "use": "@vercel/node" }],
+  "routes": [{ "src": "/(.*)", "dest": "/" }]
 }
