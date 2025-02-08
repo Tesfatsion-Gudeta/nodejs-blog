@@ -4,6 +4,7 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.jwtSecret;
+const Post = require("../models/Post");
 
 const adminLayout = "../views/layouts/admin";
 
@@ -55,7 +56,7 @@ router.post("/admin", async (req, res) => {
       return res.status(401).json({ message: "Invalid Credentials." });
     }
 
-    const token = jwt.sign({ userId: user.id }, jwtSecret);
+    const token = user.generateAuthToken();
     res.cookie("token", token, { httpOnly: true });
     res.redirect("/dashboard");
   } catch (error) {
@@ -89,8 +90,44 @@ router.post("/register", async (req, res) => {
   }
 });
 
+//GET
+//Admin dashboard
 router.get("/dashboard", authMiddleWare, async (req, res) => {
-  res.render("admin/dashboard");
+  try {
+    const data = await Post.find();
+
+    const locals = {
+      title: "Dashboard",
+      description: "simple blog created with nodejs,express and mongodb.",
+    };
+    res.render("admin/dashboard", {
+      locals,
+      data,
+      layout: adminLayout,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
+
+//GET
+//admin - create new post
+router.get("/add-post", authMiddleWare, async (req, res) => {
+  try {
+    const locals = {
+      title: "Dashboard",
+      description: "simple blog created with nodejs,express and mongodb.",
+    };
+    res.render("admin/dashboard", {
+      locals,
+
+      layout: adminLayout,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//implement pagination for the admin dashboard
 
 module.exports = router;
