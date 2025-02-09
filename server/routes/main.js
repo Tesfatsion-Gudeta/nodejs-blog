@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
       description: "simple blog created with nodejs,express and mongodb",
     };
 
-    let perPage = 10;
+    let perPage = 5;
     let page = req.query.page || 1;
 
     const data = await Post.aggregate([{ $sort: { createdAt: -1 } }])
