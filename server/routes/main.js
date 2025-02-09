@@ -1,87 +1,29 @@
 const express = require("express");
 const router = express.Router();
-const Post = require("../models/Post");
+const {
+  getHomePage,
+  getPost,
+  searchPost,
+  getAboutPage,
+  getContactPage,
+} = require("../controllers/postController");
 
 //routes
 
 //home get
-router.get("/", async (req, res) => {
-  try {
-    const locals = {
-      title: "NodeJs Blog",
-      description: "simple blog created with nodejs,express and mongodb",
-    };
+router.get("/", getHomePage);
 
-    let perPage = 5;
-    let page = req.query.page || 1;
+//get post
+router.get("/post/:id", getPost);
 
-    const data = await Post.aggregate([{ $sort: { createdAt: -1 } }])
-      .skip(perPage * page - perPage)
-      .limit(perPage)
-      .exec();
+//POST- seacrchTerm
+router.post("/search", searchPost);
 
-    const count = await Post.countDocuments();
-    const nextPage = parseInt(page) + 1;
-    const hasNextPage = nextPage <= Math.ceil(count / perPage);
+//GET aboutpage
+router.get("/about", getAboutPage);
 
-    res.render("index", {
-      locals,
-      data,
-      current: page,
-      nextPage: hasNextPage ? nextPage : null,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-//get method for post
-router.get("/post/:id", async (req, res) => {
-  try {
-    const slug = req.params.id;
-    const data = await Post.findById({ _id: slug });
-
-    const locals = {
-      title: data.title,
-      description: "simple blog created with nodeJs, Express and MongoDb",
-    };
-    res.render("post", {
-      locals,
-      data,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-//POST
-//post - seacrchTerm
-
-router.post("/search", async (req, res) => {
-  try {
-    const locals = {
-      title: "search",
-      description: "simple blog created with nodeJs, Express and MongoDb",
-    };
-
-    let searchTerm = req.body.searchTerm;
-    const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "");
-
-    const data = await Post.find({
-      //$or= match atleast one of this conditions
-      $or: [
-        { title: { $regex: new RegExp(searchNoSpecialChar, "i") } }, //$regex = MongoDB operator that allows pattern matching ,i : for case insensitive matching
-        { body: { $regex: new RegExp(searchNoSpecialChar, "i") } },
-      ],
-    });
-    res.render("search", {
-      data,
-      locals,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-});
+//GET contactpage
+router.get("/contact", getContactPage);
 
 // function insertPostData() {
 //   Post.insertMany([
@@ -129,9 +71,5 @@ router.post("/search", async (req, res) => {
 // }
 
 // insertPostData();
-
-router.get("/about", (req, res) => {
-  res.render("about");
-});
 
 module.exports = router;
