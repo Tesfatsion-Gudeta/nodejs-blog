@@ -1,6 +1,6 @@
 # Node.js Blog App
 
-A simple blog application built with Node.js, Express.js, MongoDB, and JWT authentication. This app allows users to create, read, update, and delete blog posts. It also includes features like user authentication, comment system, likes, and shares.
+A simple blog application built with Node.js, Express.js, MongoDB, and JWT authentication. This app allows users to create, read, update, and delete blog posts. It also includes features like user authentication and allow as to apply full crud operation.
 
 ## Features
 - **Blog Management:** read, create(admin only) ,update(admin only), and delete(admin only) blog posts.
