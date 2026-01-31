@@ -7,10 +7,10 @@
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["blog", "nodejs", "express", "mongodb", "jwt", "authentication", "crud", "ejs"],
+  "author": "Tesfatsion Gudeta",
   "license": "ISC",
-  "description": "",
+  "description": "A full-featured blog application built with Node.js, Express.js, MongoDB, and JWT authentication. Features include user authentication, admin panel for managing posts, search functionality, and pagination.",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "connect-mongo": "^5.1.0",
